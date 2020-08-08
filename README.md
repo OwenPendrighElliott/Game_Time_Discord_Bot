@@ -2,7 +2,7 @@
 
 ## General
 
-A fun little discord bot that plays annoying sounds, follows people around and tells you where to drop in COD Warzone. It is also capable of downloading youtube likes with the `!play` command.
+A fun little discord bot that plays annoying sounds, follows people around and tells you where to drop in COD Warzone. It is also capable of playing youtube links with the `!play` command.
 
 ## setup
 You will need to do the following to make it work:
