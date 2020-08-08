@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 import random
 import youtube_dl
 
+# ---- START: Edit for your own discord ----
+
 # load token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -28,6 +30,8 @@ channel_snd_dict = {'General' : ['universal.mp3'],
 
 # List of channel that the bot won't follow people into, bot will still join these if someone has not moved from another channel
 stalking_exclude = ['General']
+
+# ---- END: Edit for your own discord ----
 
 @bot.event
 async def on_ready():
