@@ -1,4 +1,4 @@
-/sounds/*
-/tmp/*
+sounds/*
+tmp/*
 .env
 yt_tmp.mp3
