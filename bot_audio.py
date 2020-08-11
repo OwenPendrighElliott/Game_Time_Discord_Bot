@@ -3,14 +3,19 @@ import os
 from discord.ext import commands
 from discord.utils import get
 import youtube_dl
+import collections
+
+
 
 class BotAudio(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.ytq = collections.deque()
 
     # play a local file
     @commands.command(pass_context=True, aliases=['pf'])
-    async def play_file(self, ctx, snd, volume=0.2):
+    async def play_file(self, ctx, snd, volume=0.2, usr=None):
+
         # if the requested file exists them play it
         f = os.path.join('sounds', snd)
         snd_there = os.path.isfile(f)
@@ -20,7 +25,14 @@ class BotAudio(commands.Cog):
 
         # got bot setup for voice
         voice = get(self.bot.voice_clients, guild=ctx.guild)
-        channel = ctx.message.author.voice.channel
+
+        # if a user has been specified then send the bot to their channel, otherwise use authors channel
+        if not usr:
+            channel = ctx.message.author.voice.channel
+        else:
+            for member in ctx.message.author.guild.members:
+                if str(member).split('#')[0].lower() == usr.lower():
+                    channel = member.voice.channel
 
         # if bot is doing something else stop it
         if voice and voice.is_playing():
@@ -54,7 +66,14 @@ class BotAudio(commands.Cog):
         await ctx.send(files)
        
     @commands.command(pass_context=True, aliases=['p'])
-    async def play(self, ctx, url: str, volume=0.2):
+    async def play(self, ctx, url="", volume=0.2):
+        print(self.ytq)
+        if url == "" and self.ytq:
+            url = self.ytq.pop()
+        else:
+            await ctx.send("No link was provided and none are on the queue")
+            return
+            
         # if the tmp file is already there then delete it
         f = os.path.join('yt_tmp.mp3')
         snd_there = os.path.isfile(f)
@@ -110,6 +129,12 @@ class BotAudio(commands.Cog):
         voice.source.volume = volume
 
         await ctx.send(f"Playing your link {str(ctx.message.author).split('#')[0]}!")
+
+    @commands.command(pass_context=True, aliases=['q'])
+    async def queue(self, ctx, url: str, volume=0.2):
+        self.ytq.appendleft(url)
+        await ctx.send("Adding to queue")
+    
 
     # kill all voice activity for the bot
     @commands.command(pass_context=True, aliases=['s'])
