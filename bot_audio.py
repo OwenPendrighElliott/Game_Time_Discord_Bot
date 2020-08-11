@@ -41,6 +41,7 @@ class BotAudio(commands.Cog):
 
         await ctx.send(f"Playing {snd} for you {str(ctx.message.author).split('#')[0]}!")
 
+    # list all sound files, included in audio cog due to relevance 
     @commands.command(pass_context=True, aliases=['ls'])
     async def list_sounds(self, ctx):
         sounds = os.path.join('sounds')
