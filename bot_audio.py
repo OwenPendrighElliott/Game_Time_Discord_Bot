@@ -2,8 +2,6 @@ import discord
 import os
 from discord.ext import commands
 from discord.utils import get
-from dotenv import load_dotenv
-import random
 import youtube_dl
 
 class BotAudio(commands.Cog):
