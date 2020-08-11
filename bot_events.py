@@ -24,9 +24,12 @@ class BotEvents(commands.Cog):
             return
         
         # get the list of sounds for that channel
-        chnl_snds = self.channel_snd_dict[str(after.channel)]
-        # pick a random sound from the list
-        snd = random.choice(chnl_snds)
+        if str(after.channel) in self.channel_snd_dict:
+            chnl_snds = self.channel_snd_dict[str(after.channel)]
+            # pick a random sound from the list
+            snd = random.choice(chnl_snds)
+        else:
+            return
 
         # get bot ready for voice
         voice = get(self.bot.voice_clients, guild=member.guild)

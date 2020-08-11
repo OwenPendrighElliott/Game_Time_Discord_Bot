@@ -29,14 +29,6 @@ class BotCommands(commands.Cog):
     # Optionally query a specific person
     @commands.command(pass_context=True, aliases=['g'])
     async def game(self, ctx, prsn=None):
-        # act_sum = "Current activity of server members:\n"
-        # for member in ctx.message.author.guild.members:
-        #     if not prsn:
-        #         act_sum += f"{str(member).split('#')[0]}: {member.activity}\n"
-        #     elif str(member).split('#')[0] == prsn:
-        #         act_sum += f"{str(member).split('#')[0]}: {member.activity}"
-        # await ctx.send(act_sum)
-
         embed = discord.Embed(
             colour = discord.Colour.green()
         )   

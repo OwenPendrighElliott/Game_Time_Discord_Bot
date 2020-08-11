@@ -27,11 +27,16 @@ VOLUME = 0.2
 
 # maps channel names to sounds
 # customise according to your discord
+# Bot lives in 2 discords so some double ups because I'm lazy
 CHNL_SND_DICT = {'General' : ['universal.mp3'],
                  'game-time' : ['hello_gamer.mp3', 'frickin_gaming.mp3', 'gaming_setup.mp3'], 
                  'kript-skiddies' : ['HACKERMAN.mp3'], 
                  'speed-run' : ['sonic.mp3']*99+['sanic.mp3'], 
-                 'the-gulag' : ['inthegulag.mp3']}
+                 'the-gulag' : ['inthegulag.mp3'],
+                 '🎮 game-time 🎮' : ['hello_gamer.mp3', 'frickin_gaming.mp3', 'gaming_setup.mp3'], 
+                 '💻 kript-skiddies 💻' : ['HACKERMAN.mp3'], 
+                 '⏩ speed-run ⏩' : ['sonic.mp3']*99+['sanic.mp3'], 
+                 '⛓ the-gulag ⛓' : ['inthegulag.mp3']}
 
 # List of channel that the bot won't follow people into, bot will still join these if someone has not moved from another channel
 STALK_EXCLUDE = ['General']
