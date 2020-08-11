@@ -38,10 +38,10 @@ class BotCommands(commands.Cog):
             else:
                 game = "No game time :("
             if not prsn and not member.bot:
-                embed.add_field(name=str(member).split('#')[0], 
+                 embed.add_field(name=str(member).split('#')[0], 
                                 value=game,
                                 inline=False)
-            elif str(member).split('#')[0].lower() == prsn.lower() and not member.bot:
+            elif str(member).split('#')[0] == prsn and not member.bot:
                 embed.add_field(name=str(member).split('#')[0], 
                                 value=game,
                                 inline=False)
