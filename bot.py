@@ -17,10 +17,10 @@ import bot_events
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!', case_insensitive=True)
 
 # Volume for sounds when the bot greets members of channels 
-VOLUME = 0.2
+VOLUME = 0.3
 
 # maps channel names to sounds
 # customise according to your discord

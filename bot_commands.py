@@ -33,12 +33,16 @@ class BotCommands(commands.Cog):
             colour = discord.Colour.green()
         )
         for member in ctx.message.author.guild.members:
+            if member.activity:
+                game = str(member.activity.name)
+            else:
+                game = "No game time :("
             if not prsn and not member.bot:
                 embed.add_field(name=str(member).split('#')[0], 
-                                value=str(member.activity),
+                                value=game,
                                 inline=False)
-            elif str(member).split('#')[0] == prsn and not member.bot:
+            elif str(member).split('#')[0].lower() == prsn.lower() and not member.bot:
                 embed.add_field(name=str(member).split('#')[0], 
-                                value=str(member.activity),
+                                value=game,
                                 inline=False)
         await ctx.send(embed=embed)
