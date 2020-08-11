@@ -6,11 +6,10 @@ import asyncio
 import os
 
 class BotEvents(commands.Cog):
-    def __init__(self, bot, channel_snd_dict, stalking_exclude, bot_name, volume):
+    def __init__(self, bot, channel_snd_dict, stalking_exclude, volume):
         self.bot = bot
         self.channel_snd_dict = channel_snd_dict
         self.stalking_exclude = stalking_exclude
-        self.bot_name = bot_name
         self.volume = volume
 
     # when a user moves channel the bot follows them to play a greeting sound
@@ -20,7 +19,7 @@ class BotEvents(commands.Cog):
         print(f"{member} is now in {after.channel}")
 
         # make sure the bot doesnt trigger this
-        if str(member).split('#')[0] == self.bot_name or after.channel == None:
+        if member.bot or after.channel == None:
             return
         
         # get the list of sounds for that channel

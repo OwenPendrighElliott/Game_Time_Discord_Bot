@@ -19,9 +19,6 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix='!')
 
-# The name of the bot, used to stop the bot from triggering channel movement events
-BOT_NAME = "Game Time"
-
 # Volume for sounds when the bot greets members of channels 
 VOLUME = 0.2
 
@@ -87,7 +84,7 @@ bot.add_cog(bot_commands.BotCommands(bot))
 bot.add_cog(bot_audio.BotAudio(bot))
 
 # add events cog
-bot.add_cog(bot_events.BotEvents(bot, CHNL_SND_DICT, STALK_EXCLUDE, BOT_NAME, VOLUME))
+bot.add_cog(bot_events.BotEvents(bot, CHNL_SND_DICT, STALK_EXCLUDE, VOLUME))
 
 # run the bot
 bot.run(TOKEN)

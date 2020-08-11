@@ -31,13 +31,13 @@ class BotCommands(commands.Cog):
     async def game(self, ctx, prsn=None):
         embed = discord.Embed(
             colour = discord.Colour.green()
-        )   
+        )
         for member in ctx.message.author.guild.members:
-            if not prsn:
+            if not prsn and not member.bot:
                 embed.add_field(name=str(member).split('#')[0], 
                                 value=str(member.activity),
                                 inline=False)
-            elif str(member).split('#')[0] == prsn:
+            elif str(member).split('#')[0] == prsn and not member.bot:
                 embed.add_field(name=str(member).split('#')[0], 
                                 value=str(member.activity),
                                 inline=False)
