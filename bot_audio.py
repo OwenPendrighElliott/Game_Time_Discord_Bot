@@ -66,11 +66,11 @@ class BotAudio(commands.Cog):
         await ctx.send(files)
        
     @commands.command(pass_context=True, aliases=['p'])
-    async def play(self, ctx, url="", volume=0.2):
+    async def play(self, ctx, url: str, volume=0.2):
         print(self.ytq)
         if url == "" and self.ytq:
             url = self.ytq.pop()
-        else:
+        elif url == "":
             await ctx.send("No link was provided and none are on the queue")
             return
             
