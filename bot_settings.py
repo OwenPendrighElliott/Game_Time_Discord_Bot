@@ -1,7 +1,7 @@
 class BotSettings():
     def __init__(self):
         # Volume for sounds when the bot greets members of channels 
-        self.volume = 0.5
+        self.volume = 0.75
 
         # maps channel names to sounds
         # customise according to your discord
@@ -16,5 +16,5 @@ class BotSettings():
                         '⏩ speed-run ⏩' : ['sonic.mp3']*99+['sanic.mp3'], 
                         '⛓ the-gulag ⛓' : ['inthegulag.mp3']}
 
-        # List of channel that the bot won't follow people into, bot will still join these if someone has not moved from another channel
+        # List of channels that the bot won't follow people into, bot will still join these if someone has not moved from another channel
         self.stalk_exclude = ['General']
