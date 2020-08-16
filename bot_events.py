@@ -39,7 +39,7 @@ class BotEvents(commands.Cog):
             voice.stop()
 
         # if the person is new to the server always play otherwise play if that are moving to a non excluded channel
-        if before.channel == None or (after.channel != None and str(after.channel) not in self.stalking_exclude):
+        if (before.channel == None or (after.channel != None and str(after.channel) not in self.stalking_exclude)) and before.channel != after.channel:
             # if bot is connected then move otherwise connect
             if voice and voice.is_connected():
                 await voice.move_to(channel)
@@ -59,4 +59,4 @@ class BotEvents(commands.Cog):
         if after.activity: a_game = after.activity.name
         else: a_game = "none"
 
-        print(f"{before} was doing {before.activity} but is now doing {after.activity}")
+        print(f"{before} was doing {b_game} but is now doing {a_game}")
