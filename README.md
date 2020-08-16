@@ -2,7 +2,7 @@
 
 ## General
 
-A fun little discord bot that plays annoying sounds, follows people around and tells you where to drop in COD Warzone. It is also capable of playing youtube links with the `!play` command.
+Annoying discord bot with some basic functionality, see bot.py for list of commands.
 
 ## Setup
 You will need to do the following to make it work:
