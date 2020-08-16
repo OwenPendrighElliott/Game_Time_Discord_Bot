@@ -10,8 +10,7 @@ import youtube_dl
 import bot_commands
 import bot_audio
 import bot_events
-
-# ---- START: Edit for your own discord ----
+import bot_settings
 
 # load token
 load_dotenv()
@@ -19,26 +18,11 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix='!', case_insensitive=True)
 
-# Volume for sounds when the bot greets members of channels 
-VOLUME = 0.3
+bs = bot_settings.BotSettings()
 
-# maps channel names to sounds
-# customise according to your discord
-# Bot lives in 2 discords so some double ups because I'm lazy
-CHNL_SND_DICT = {'General' : ['universal.mp3'],
-                 'game-time' : ['hello_gamer.mp3', 'frickin_gaming.mp3', 'gaming_setup.mp3'], 
-                 'kript-skiddies' : ['HACKERMAN.mp3'], 
-                 'speed-run' : ['sonic.mp3']*99+['sanic.mp3'], 
-                 'the-gulag' : ['inthegulag.mp3'],
-                 '🎮 game-time 🎮' : ['hello_gamer.mp3', 'frickin_gaming.mp3', 'gaming_setup.mp3'], 
-                 '💻 kript-skiddies 💻' : ['HACKERMAN.mp3'], 
-                 '⏩ speed-run ⏩' : ['sonic.mp3']*99+['sanic.mp3'], 
-                 '⛓ the-gulag ⛓' : ['inthegulag.mp3']}
-
-# List of channel that the bot won't follow people into, bot will still join these if someone has not moved from another channel
-STALK_EXCLUDE = ['General']
-
-# ---- END: Edit for your own discord ----
+VOLUME = bs.volume
+CHNL_SND_DICT = bs.chnl_snd_dict
+STALK_EXCLUDE = bs.stalk_exclude
 
 # make way for custom help command
 bot.remove_command('help')
@@ -49,25 +33,25 @@ async def help(ctx):
         colour = discord.Colour.orange()
     )
     embed.set_author(name='help')
-    embed.add_field(name='!play_file', 
+    embed.add_field(name='!play_file, alias=[!pf]', 
                     value='Play the file specified after the command, see available files with !ls',
                     inline=False)
-    embed.add_field(name='!list_sounds', 
+    embed.add_field(name='!list_sounds, alias=[!ls]', 
                     value='Also !ls, lists available sounds',
                     inline=False)
-    embed.add_field(name='!play', 
+    embed.add_field(name='!play, alias=[!p]', 
                     value='Plays the specified youtube link',
                     inline=False)
-    embed.add_field(name='!stop', 
+    embed.add_field(name='!stop, alias=[!s]', 
                     value='Stops all bot voice activity',
                     inline=False)
-    embed.add_field(name='!drop', 
+    embed.add_field(name='!drop, alias=[!d]', 
                     value='Picks a random drop location from COD Warzone',
                     inline=False)
     embed.add_field(name='!toss', 
                     value='Toss a coin',
                     inline=False)
-    embed.add_field(name='!game', 
+    embed.add_field(name='!game, alias=[!g]', 
                     value='Show what the activites of everyone, optionally query a specific person',
                     inline=False)
     await ctx.send(embed=embed)

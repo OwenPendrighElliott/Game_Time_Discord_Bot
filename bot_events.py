@@ -34,10 +34,9 @@ class BotEvents(commands.Cog):
         voice = get(self.bot.voice_clients, guild=member.guild)
         channel = after.channel
 
-        # if bot is doing something else so it and disconnect to avoid funny business
+        # if bot is doing something else stop it to avoid funny business
         if voice and voice.is_playing():
             voice.stop()
-            await voice.disconnect()
 
         # if the person is new to the server always play otherwise play if that are moving to a non excluded channel
         if before.channel == None or (after.channel != None and str(after.channel) not in self.stalking_exclude):
@@ -54,6 +53,10 @@ class BotEvents(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
+        if before.activity: b_game = before.activity.name
+        else: b_game = "none"
+
+        if after.activity: a_game = after.activity.name
+        else: a_game = "none"
+
         print(f"{before} was doing {before.activity} but is now doing {after.activity}")
-        if not before.activity:
-            print(self.bot.guilds)
