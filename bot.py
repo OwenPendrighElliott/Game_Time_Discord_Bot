@@ -54,6 +54,9 @@ async def help(ctx):
     embed.add_field(name='!game, alias=[!g]', 
                     value='Show what the activites of everyone, optionally query a specific person',
                     inline=False)
+    embed.add_field(name='!fry, alias=[!deep_fry]', 
+                    value='Use in a message with an image and the bot will return a deep fried verison',
+                    inline=False)
     await ctx.send(embed=embed)
 
 # notify that bot is running
