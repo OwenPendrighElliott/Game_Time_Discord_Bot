@@ -70,7 +70,7 @@ class BotCommands(commands.Cog):
         print("Losing pixels")
         res_factor = scale
         img = img.resize((int(orig_size[0]/res_factor), int(orig_size[1]/res_factor)), resample=Image.BOX)
-        img = img.resize(orig_size, resample=Image.BOX)
+        img = img.resize(orig_size, resample=Image.NEAREST)
         img.save('attachment.png')
 
         print("Sending image")
