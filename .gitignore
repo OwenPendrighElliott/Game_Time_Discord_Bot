@@ -2,4 +2,5 @@ sounds/*.mp3
 tmp/*.mp3
 .env
 yt_tmp.mp3
+attachment.png
 __pycache__/
