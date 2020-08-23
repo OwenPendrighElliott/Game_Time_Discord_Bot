@@ -81,12 +81,33 @@ class BotCommands(commands.Cog):
             await ctx.send(file=picture)
 
     @commands.command(pass_context=True)
-    async def test(self, ctx):
-        print(ctx.message.author.guild)
+    async def shuffle(self, ctx):
+        possib_chnls = [channel for channel in ctx.message.author.guild.channels if type(channel) == discord.VoiceChannel]
+        for member in ctx.message.author.guild.members:
+            if member.bot == True:
+                continue
+            try:
+                chnl = random.choice(possib_chnls)
+                await member.move_to(chnl)
+                print(f"Moving {member.name} to {chnl}")
+            except Exception:
+                print(f"{member.name} can't move, probably not online")
+    
+    @commands.command(pass_context=True, aliases=['itg', 'gulag'])
+    async def inthegulag(self, ctx, name: str):
+        gulag = None
+        for channel in ctx.message.author.guild.channels:
+            if channel.name == "⛓ the-gulag ⛓" or channel.name == "the-gulag":
+                gulag = channel
 
-        print(ctx.message.author.guild.members)
-        
-        print(ctx.message.author.guild.channels)
+        for member in ctx.message.author.guild.members:
+            if member.name.lower() != name.lower():
+                continue
+            try:
+                await member.move_to(gulag)
+                print(f"Moving {member.name} to {gulag}")
+            except Exception:
+                print(f"{member.name} can't move to the gulag")
 
     @commands.command(pass_context=True)
     async def update(self, ctx, branch="master"):
