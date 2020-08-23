@@ -3,6 +3,7 @@ from discord.ext import commands
 import random 
 import asyncio
 from PIL import Image, ImageOps, ImageEnhance
+import os
 
 class BotCommands(commands.Cog):
     def __init__(self, bot):
@@ -78,3 +79,8 @@ class BotCommands(commands.Cog):
         with open('attachment.png', 'rb') as f:
             picture = discord.File(f)
             await ctx.send(file=picture)
+
+    @commands.command(pass_context=True)
+    async def update(self, ctx):
+        os.system("bash bot_update.sh")
+
