@@ -81,6 +81,10 @@ class BotCommands(commands.Cog):
             await ctx.send(file=picture)
 
     @commands.command(pass_context=True)
-    async def update(self, ctx):
-        os.system("bash bot_update.sh")
+    async def update(self, ctx, branch="master"):
+        if branch=="master":
+            os.system("bash bot_update.sh")
+        elif branch=="dev":
+            os.system("bash bot_update_dev.sh")
+
 
