@@ -81,6 +81,14 @@ class BotCommands(commands.Cog):
             await ctx.send(file=picture)
 
     @commands.command(pass_context=True)
+    async def test(self, ctx):
+        print(ctx.message.author.guild)
+
+        print(ctx.message.author.guild.members)
+        
+        print(ctx.message.author.guild.channels)
+
+    @commands.command(pass_context=True)
     async def update(self, ctx, branch="master"):
         if branch=="master":
             os.system("bash bot_update.sh")
