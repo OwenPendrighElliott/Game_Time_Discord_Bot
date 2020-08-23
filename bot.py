@@ -57,6 +57,12 @@ async def help(ctx):
     embed.add_field(name='!fry, alias=[!deep_fry]', 
                     value='Use in a message with an image and the bot will return a deep fried verison',
                     inline=False)
+    embed.add_field(name='!shuffle', 
+                    value='Move all online members to random channels',
+                    inline=False)
+    embed.add_field(name='!inthegulag, alias=[!itg, !gulag]', 
+                    value='Move a specified person to the gulag',
+                    inline=False)
     await ctx.send(embed=embed)
 
 # notify that bot is running
