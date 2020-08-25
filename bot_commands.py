@@ -50,7 +50,7 @@ class BotCommands(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(pass_context=True, aliases=['deep_fry'])
-    async def fry(self, ctx, scale=2):
+    async def fry(self, ctx, res_factor1=3, res_factor2=5):
         print("Downloading image")
         # download the attachment
         disc_img = ctx.message.attachments[0]
@@ -61,17 +61,17 @@ class BotCommands(commands.Cog):
         img = Image.open('attachment.png')
         img = img.convert('RGB')
         red_chnl = img.split()[0] #(R,G,B)
-        red_chnl = ImageEnhance.Contrast(red_chnl).enhance(2)
-        red_chnl = ImageEnhance.Brightness(red_chnl).enhance(2)
-        red_chnl = ImageOps.colorize(red_chnl, (230, 0, 10), (255, 255, 15))
+        red_chnl = ImageEnhance.Contrast(red_chnl).enhance(1)
+        red_chnl = ImageEnhance.Brightness(red_chnl).enhance(1)
+        red_chnl = ImageOps.colorize(red_chnl, (100, 0, 10), (255, 150, 15))
         img = Image.blend(img, red_chnl, 0.95)
         img = ImageEnhance.Sharpness(img).enhance(150)
         orig_size = img.size
 
         print("Losing pixels")
-        res_factor = scale
-        img = img.resize((int(orig_size[0]/res_factor), int(orig_size[1]/res_factor)), resample=Image.BOX)
-        img = img.resize(orig_size, resample=Image.NEAREST)
+        img = img.resize((int(orig_size[0]/res_factor1), int(orig_size[1]/res_factor1)), resample=Image.BICUBIC)
+        img = img.resize(orig_size, resample=Image.BICUBIC)
+        img = ImageEnhance.Sharpness(img).enhance(150)
         img.save('attachment.png')
 
         print("Sending image")
