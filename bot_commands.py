@@ -111,9 +111,9 @@ class BotCommands(commands.Cog):
 
     @commands.command(pass_context=True)
     async def update(self, ctx):
-        ctx.send("Updating myself...")
+        await ctx.send("Updating myself...")
         os.system("bash bot_update.sh")
-        ctx.send("Updated!")
+        await ctx.send("Updated!")
 
 
 
