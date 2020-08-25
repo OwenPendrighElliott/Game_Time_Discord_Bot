@@ -65,7 +65,6 @@ class BotCommands(commands.Cog):
         print("Losing pixels")
         img = img.resize((int(orig_size[0]/res_factor1), int(orig_size[1]/res_factor1)), resample=Image.BILINEAR)
         img = ImageEnhance.Sharpness(img).enhance(15)
-        # img = img.convert('P')
         img = img.resize(orig_size, resample=Image.BILINEAR)
         img = img.convert('RGB')
         converter = ImageEnhance.Color(img)
