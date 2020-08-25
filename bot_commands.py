@@ -110,9 +110,12 @@ class BotCommands(commands.Cog):
                 print(f"{member.name} can't move to the gulag")
 
     @commands.command(pass_context=True)
-    async def update(self, ctx):
-        await ctx.send("Updating myself...")
-        os.system("bash bot_update.sh")
+    async def update(self, ctx, branch="master"):
+        await ctx.send(f"Updating myself from branch {branch}")
+        if branch == "master":
+            os.system("bash bot_update.sh")
+        elif branch == "dev":
+            os.system("bash bot_update_dev.sh")
         await ctx.send("Updated!")
 
 
