@@ -4,6 +4,14 @@ import random
 import asyncio
 from PIL import Image, ImageOps, ImageEnhance
 import os
+import sys
+from collections import deque
+from itertools import combinations
+
+# letters and number modules that are used in a separate project of mine
+# https://github.com/OwenPendrighElliott/countdown_solver
+import letters
+import nums
 
 class BotCommands(commands.Cog):
     def __init__(self, bot):
@@ -108,6 +116,23 @@ class BotCommands(commands.Cog):
                 print(f"{member.name} can't move to the gulag")
 
     @commands.command(pass_context=True)
+    async def numbers(self, ctx, numbers: str, target: int):
+        ns = [int(n) for n in numbers.split('-')]
+        game = nums.numbers_game(target, ns, True)
+        sol = game.solve()
+        
+        sol_str = ""
+        for a, op, b, r in sol:
+            sol_str += f"{op.capitalize()} {a} and {b} to get {r}\n"
+        await ctx.send(sol_str)
+
+    @commands.command(pass_context=True)
+    async def letters(self, ctx, ls: str):
+        game = letters.letters_game(ls)
+        sol = game.solve()
+        await ctx.send(f"The best word is {sol} and has a length of {len(sol)}")
+
+    @commands.command(pass_context=True)
     async def update(self, ctx, branch="master"):
         await ctx.send(f"Updating myself from branch {branch}")
         if branch == "master":
@@ -115,6 +140,3 @@ class BotCommands(commands.Cog):
         elif branch == "dev":
             os.system("bash bot_update_dev.sh")
         await ctx.send("Updated!")
-
-
-
