@@ -22,15 +22,20 @@ class BotCommands(commands.Cog):
                 "TV Station", "Stadium", "Lumberyard", "Quarry"]
 
     @commands.command(pass_context=True, aliases=['d'])
-    async def drop(self, ctx):
+    async def drop(self, ctx) -> None:
+        '''
+        Chooses a drop location for WarZone
+        '''
         # pick a location and send it back to chat
         loc = random.choice(self.drop_locs)
         await ctx.send(f"Drop at {loc}")
 
     # toss a coin
     @commands.command(pass_context=True)
-    async def toss(self, ctx):
-        # pick a location and send it back to chat
+    async def toss(self, ctx) -> None:
+        '''
+        Tosses a coin
+        '''
         coin = random.choice(['Heads', 'Tails'])
         await ctx.send(f"{coin}")
 
@@ -38,7 +43,10 @@ class BotCommands(commands.Cog):
     # See what everyone is doing
     # Optionally query a specific person
     @commands.command(pass_context=True, aliases=['g'])
-    async def game(self, ctx, prsn=None):
+    async def game(self, ctx, prsn=None) -> None:
+        '''
+        Lists the current activity for everyone in the server
+        '''
         embed = discord.Embed(
             colour = discord.Colour.green()
         )
@@ -58,7 +66,10 @@ class BotCommands(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(pass_context=True, aliases=['deep_fry'])
-    async def fry(self, ctx, res_factor1=4, res_factor2=5):
+    async def fry(self, ctx, res_factor1=4: int, res_factor2=5: int) -> None:
+        '''
+        deepfry an image included in the message
+        '''
         print("Downloading image")
         # download the attachment
         disc_img = ctx.message.attachments[0]
@@ -87,7 +98,10 @@ class BotCommands(commands.Cog):
             await ctx.send(file=picture)
 
     @commands.command(pass_context=True)
-    async def shuffle(self, ctx):
+    async def shuffle(self, ctx) -> None:
+        '''
+        Move all users to random channels
+        '''
         possib_chnls = [channel for channel in ctx.message.author.guild.channels if type(channel) == discord.VoiceChannel]
         for member in ctx.message.author.guild.members:
             if member.bot == True:
@@ -100,7 +114,10 @@ class BotCommands(commands.Cog):
                 print(f"{member.name} can't move, probably not online")
     
     @commands.command(pass_context=True, aliases=['itg', 'gulag'])
-    async def inthegulag(self, ctx, name: str):
+    async def inthegulag(self, ctx, name: str) -> None:
+        '''
+        Send the specified user to the gulag
+        '''
         gulag = None
         for channel in ctx.message.author.guild.channels:
             if channel.name == "⛓ the-gulag ⛓" or channel.name == "the-gulag":
@@ -116,7 +133,10 @@ class BotCommands(commands.Cog):
                 print(f"{member.name} can't move to the gulag")
 
     @commands.command(pass_context=True)
-    async def numbers(self, ctx, numbers: str, target: int):
+    async def numbers(self, ctx, numbers: str, target: int) -> None:
+        '''
+        Find the optimal solution for a game of numbers (countdown)
+        '''
         ns = [int(n) for n in numbers.split('-')]
         game = nums.numbers_game(target, ns, True)
         sol = game.solve()
@@ -127,13 +147,21 @@ class BotCommands(commands.Cog):
         await ctx.send(sol_str)
 
     @commands.command(pass_context=True)
-    async def letters(self, ctx, ls: str):
+    async def letters(self, ctx, ls: str) -> None:
+        '''
+        Find the optimal solution for a game of letters (countdown)
+        '''
         game = letters.letters_game(ls)
         sol = game.solve()
-        await ctx.send(f"The best word is {sol} and has a length of {len(sol)}")
+        await ctx.send(f'The best word is "{sol}" and has a length of {len(sol)}')
 
     @commands.command(pass_context=True)
-    async def update(self, ctx, branch="master"):
+    async def update(self, ctx, branch="master": str) -> None:
+        '''
+        Update the bot from the specified branch
+
+        Useful for testing and rebooting if something funny happens
+        '''
         await ctx.send(f"Updating myself from branch {branch}")
         if branch == "master":
             os.system("bash bot_update.sh")
