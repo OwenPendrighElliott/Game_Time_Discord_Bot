@@ -66,7 +66,7 @@ class BotCommands(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(pass_context=True, aliases=['deep_fry'])
-    async def fry(self, ctx, res_factor1=4: int, res_factor2=5: int) -> None:
+    async def fry(self, ctx, res_factor1=4, res_factor2=5) -> None:
         '''
         deepfry an image included in the message
         '''
@@ -152,7 +152,7 @@ class BotCommands(commands.Cog):
         Find the optimal solution for a game of letters (countdown)
         '''
         if len(ls) > 9:
-            await ctx.send(f'Too many letters!')
+            await ctx.send('Too many letters!')
             return None
 
         game = letters.letters_game(ls)
@@ -160,7 +160,7 @@ class BotCommands(commands.Cog):
         await ctx.send(f'The best word is "{sol}" and has a length of {len(sol)}')
 
     @commands.command(pass_context=True)
-    async def update(self, ctx, branch="master": str) -> None:
+    async def update(self, ctx, branch="master") -> None:
         '''
         Update the bot from the specified branch
 
