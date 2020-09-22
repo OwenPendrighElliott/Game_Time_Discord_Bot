@@ -117,7 +117,7 @@ class BotCommands(commands.Cog):
 
     @commands.command(pass_context=True)
     async def numbers(self, ctx, numbers: str, target: int):
-        game = numbers.numbers_game(target, numbers, True)
+        game = nums.numbers_game(target, numbers, True)
         sol = game.solve()
         
         sol_str = ""
