@@ -11,7 +11,7 @@ from itertools import combinations
 # letters and number modules that are used in a separate project of mine
 # https://github.com/OwenPendrighElliott/countdown_solver
 import letters
-import numbers
+import nums
 
 class BotCommands(commands.Cog):
     def __init__(self, bot):
