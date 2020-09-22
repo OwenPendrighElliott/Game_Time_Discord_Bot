@@ -8,6 +8,11 @@ import sys
 from collections import deque
 from itertools import combinations
 
+# letters and number modules that are used in a separate project of mine
+# https://github.com/OwenPendrighElliott/countdown_solver
+import letters
+import numbers
+
 class BotCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -112,17 +117,19 @@ class BotCommands(commands.Cog):
 
     @commands.command(pass_context=True)
     async def numbers(self, ctx, numbers: str, target: int):
-        nums = [int(n) for n in numbers.split('-')]
-        strat = False
-        game = numbers_game(target, nums, strat)
+        game = numbers.numbers_game(target, numbers, True)
         sol = game.solve()
         
-        output = ""
+        sol_str = ""
         for a, op, b, r in sol:
-            output += f"{op.capitalize()} {a} and {b} to get {r}\n"
+            sol_str += f"{op.capitalize()} {a} and {b} to get {r}\n"
+        await ctx.send(sol_str)
 
-        await ctx.send(output)
-
+    @commands.command(pass_context=True)
+    async def letters(self, ctx, ls: str):
+        game = letters.letters_game(ls)
+        sol = game.solve()
+        await ctx.send(f"The best word is {sol} and has a length of {len(sol)}")
 
     @commands.command(pass_context=True)
     async def update(self, ctx, branch="master"):
@@ -132,69 +139,3 @@ class BotCommands(commands.Cog):
         elif branch == "dev":
             os.system("bash bot_update_dev.sh")
         await ctx.send("Updated!")
-
-
-
-class numbers_game():
-    def __init__(self, goal, nums, shortest=False):
-        self.goal = goal
-        self.nums = nums
-        self.ops = [self.add, self.subtract, self.multiply, self.divide]
-        self.shortest = shortest
-
-    def add(self, a,b):
-        return a+b
-    
-    def subtract(self, a,b):
-        return a-b
-    
-    def multiply(self, a,b):
-        return a*b
-    
-    # div can not return negative or float numbers
-    def divide(self, a,b):
-        if a == 0 or b == 0 or a%b != 0:
-            raise ValueError("Invalid division for Countdown")
-        return int(a/b)
-    
-    def solve(self):
-        # initialise a deque for tracking progress
-        Q = deque()
-        Q.append((self.nums, []))
-        nodes = 0
-        while Q:
-            ns, path = Q.pop()
-
-            # check goal
-            if self.goal in ns:
-                print(f"Solution found after expanding {nodes} nodes")
-                return path
-            
-            # if only one number is left then this path has failed
-            if len(ns) <= 1:
-                continue
-
-            for a, b in combinations(ns, 2):
-                # enforce largest first to allow for combinations instead of permutations
-                if b > a:
-                    a, b = b, a
-                for op in self.ops:
-                    nodes += 1
-                    # calulate new value 
-                    try:
-                        new_n = op(a, b)
-                    except ValueError:
-                        continue
-                    
-                    # if value is negative then we dont need it
-                    if new_n < 0:
-                        continue
-
-                    # create new list of numbers and new path
-                    new_ns = list(ns)
-                    new_ns.remove(a)
-                    new_ns.remove(b)
-                    new_ns.append(new_n)
-                    new_path = list(path)
-                    new_path.append((a, op.__name__, b, new_n))
-                    Q.append((new_ns, new_path))
