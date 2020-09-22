@@ -151,6 +151,10 @@ class BotCommands(commands.Cog):
         '''
         Find the optimal solution for a game of letters (countdown)
         '''
+        if len(ls) > 9:
+            await ctx.send(f'Too many letters!')
+            return None
+
         game = letters.letters_game(ls)
         sol = game.solve()
         await ctx.send(f'The best word is "{sol}" and has a length of {len(sol)}')
