@@ -133,12 +133,12 @@ class BotCommands(commands.Cog):
                 print(f"{member.name} can't move to the gulag")
 
     @commands.command(pass_context=True)
-    async def numbers(self, ctx, numbers: str, target: int) -> None:
+    async def numbers(self, ctx, numbers: str, target: int, trickshot=False) -> None:
         '''
         Find the optimal solution for a game of numbers (countdown)
         '''
         ns = [int(n) for n in numbers.split('-')]
-        game = nums.numbers_game(target, ns, True)
+        game = nums.numbers_game(target, ns, trickshot)
         sol = game.solve()
         
         sol_str = ""
