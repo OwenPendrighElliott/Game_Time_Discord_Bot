@@ -63,6 +63,12 @@ async def help(ctx):
     embed.add_field(name='!inthegulag, alias=[!itg, !gulag]', 
                     value='Move a specified person to the gulag',
                     inline=False)
+    embed.add_field(name='!letters', 
+                    value='Find the longest word from the specified letters',
+                    inline=False)
+    embed.add_field(name='!numbers', 
+                    value='Using the hyphen separated list of numbers reach the goal number. If true is added then do a trickshot!',
+                    inline=False)
     await ctx.send(embed=embed)
 
 # notify that bot is running

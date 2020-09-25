@@ -151,8 +151,8 @@ class BotCommands(commands.Cog):
         '''
         Find the optimal solution for a game of letters (countdown)
         '''
-        if len(ls) > 9:
-            await ctx.send('Too many letters!')
+        if len(ls) > 20:
+            await ctx.send('Too many letters! Please use less than 20, I am just a little RaspberryPi')
             return None
 
         game = letters.letters_game(ls)
