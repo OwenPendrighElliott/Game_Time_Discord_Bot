@@ -26,7 +26,7 @@ class letters_game():
             for wrd in wrds:
                 if tuple(sorted(list(wrd))) in self.words:
                     print(f"A word of length {len(wrd)} was found")
-                    return ''.join(c for c in wrd)
+                    return ''.join(c for c in self.words[tuple(sorted(list(wrd)))])
 
         raise Exception("No words could be made!")
 
