@@ -1,5 +1,5 @@
 import sys
-from itertools import permutations
+from itertools import combinations
 
 class letters_game():
     def __init__(self, letters, words=None):
@@ -13,17 +13,22 @@ class letters_game():
         wl.close()
         
         self.letters = [*letters]
-        self.words = {tuple(list(wrd.lower())[:-1]) for wrd in wordlist}
+
+        self.words = {}
+        for wrd in wordlist:
+            self.words[tuple(sorted(list(wrd)[:-1]))] = wrd
+
         print(f"There are {len(self.words)} words in the dictionary")
 
     def solve(self):
-        # for every length get all permutations of the input string and check if they are words
         for i in range(9, 1, -1):
-            wrds = permutations(self.letters, i)
+            wrds = combinations(self.letters, i)
             for wrd in wrds:
-                if wrd in self.words:
+                if tuple(sorted(list(wrd))) in self.words:
                     print(f"A word of length {len(wrd)} was found")
                     return ''.join(c for c in wrd)
+
+        raise Exception("No words could be made!")
 
 # run file directly if wanted
 def main():
