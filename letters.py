@@ -16,7 +16,7 @@ class letters_game():
 
         self.words = {}
         for wrd in wordlist:
-            self.words[tuple(sorted(list(wrd)[:-1]))] = wrd
+            self.words[tuple(sorted(list(wrd)[:-1]))] = wrd[:-1]
 
         print(f"There are {len(self.words)} words in the dictionary")
 
