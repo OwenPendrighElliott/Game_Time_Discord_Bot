@@ -30,16 +30,16 @@ class BotEvents(commands.Cog):
         else:
             return
 
-        # get bot ready for voice
-        voice = get(self.bot.voice_clients, guild=member.guild)
-        channel = after.channel
-
-        # if bot is doing something else stop it to avoid funny business
-        if voice and voice.is_playing():
-            voice.stop()
-
         # if the person is new to the server always play otherwise play if that are moving to a non excluded channel
-        if (before.channel == None or (after.channel != None and str(after.channel) not in self.stalking_exclude)) and before.channel != after.channel:
+        if (before.channel == None or (after.channel != None and str(after.channel) not in self.stalking_exclude)) and str(before.channel) != str(after.channel):
+            # get bot ready for voice
+            voice = get(self.bot.voice_clients, guild=member.guild)
+            channel = after.channel
+
+            # if bot is doing something else stop it to avoid funny business
+            if voice and voice.is_playing():
+                voice.stop()
+            
             # if bot is connected then move otherwise connect
             if voice and voice.is_connected():
                 await voice.move_to(channel)
@@ -51,12 +51,13 @@ class BotEvents(commands.Cog):
             voice.source = discord.PCMVolumeTransformer(voice.source)
             voice.source.volume = self.volume
 
-    @commands.Cog.listener()
-    async def on_member_update(self, before, after):
-        if before.activity: b_game = before.activity.name
-        else: b_game = "none"
+    # TODO: Perhaps this could be used for something later?
+    # @commands.Cog.listener()
+    # async def on_member_update(self, before, after):
+    #     if before.activity: b_game = before.activity.name
+    #     else: b_game = "none"
 
-        if after.activity: a_game = after.activity.name
-        else: a_game = "none"
+    #     if after.activity: a_game = after.activity.name
+    #     else: a_game = "none"
 
-        print(f"{before} was doing {b_game} but is now doing {a_game}")
+    #     print(f"{before} was doing {b_game} but is now doing {a_game}")
