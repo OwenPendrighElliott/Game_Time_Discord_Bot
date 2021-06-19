@@ -70,11 +70,10 @@ class BotCommands(commands.Cog):
                                 inline=False)
         await ctx.send(embed=embed)
 
-    def get_face(self, image) -> List[np.ndarray]:
+    def get_face(self, image: np.ndarray) -> List[np.ndarray]:
         '''
         helper to get faces from image
         '''
-        print(type(image))
         grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
         # Detect faces
@@ -88,11 +87,33 @@ class BotCommands(commands.Cog):
         for (x, y, w, h) in face:
             crop = image[y:y + h, x:x + w]
             crop = cv2.resize(crop, dsize=(196, 196), interpolation=cv2.INTER_CUBIC)
-            print("Return")
-            print(type(crop))
             faces.append(crop)
             
         return faces
+
+    @commands.command(pass_context=True)
+    async def faces(self, ctx) -> None:
+        '''
+        Chooses a drop location for WarZone
+        '''
+        print("Downloading image...")
+        # download the attachment
+        disc_img = ctx.message.attachments[0]
+        await disc_img.save("face_im.png")
+
+        image = cv2.imread("face_im.png")
+
+        faces = self.get_face(image)
+
+        for idx, face in enumerate(faces):
+            cv2.imwrite(os.path.join('faces', f'face{idx}.png'), face)
+
+        print("Sending image")
+        for image in os.listdir('faces'):
+            with open(os.path.join('faces', image), 'rb') as f:
+                picture = discord.File(f)
+                await ctx.send(file=picture)
+            os.remove(os.path.join('faces', image))
 
     @commands.command(pass_context=True)
     async def faces(self, ctx) -> None:
