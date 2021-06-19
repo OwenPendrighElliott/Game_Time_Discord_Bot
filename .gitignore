@@ -2,8 +2,10 @@ nohup.out
 bot_update.sh
 bot_update_dev.sh
 sounds/*.mp3
+known_faces/*.png
 tmp/*.mp3
 .env
 yt_tmp.mp3
 attachment.png
+face_im.png
 __pycache__/

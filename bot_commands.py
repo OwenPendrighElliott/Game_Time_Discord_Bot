@@ -7,6 +7,9 @@ import os
 import sys
 from collections import deque
 from itertools import combinations
+import cv2
+import numpy as np
+from typing import List
 
 # letters and number modules that are used in a separate project of mine
 # https://github.com/OwenPendrighElliott/countdown_solver
@@ -20,6 +23,8 @@ class BotCommands(commands.Cog):
                 "Storage", "Boneyard", "Train Station", "Hospital", 
                 "Downtown", "Port", "Gulag", "Farm", 
                 "TV Station", "Stadium", "Lumberyard", "Quarry"]
+
+        self.face_model = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
 
     @commands.command(pass_context=True, aliases=['d'])
     async def drop(self, ctx) -> None:
@@ -64,6 +69,75 @@ class BotCommands(commands.Cog):
                                 value=game,
                                 inline=False)
         await ctx.send(embed=embed)
+
+    def get_face(self, image: np.ndarray) -> List[np.ndarray]:
+        '''
+        helper to get faces from image
+        '''
+        grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # Detect faces
+        face = self.face_model.detectMultiScale(grey, 1.1, 4)
+
+        if not isinstance(face, np.ndarray):
+            return [image,], False
+
+        # Draw rectangle around the faces and crop the faces
+        faces = []
+        for (x, y, w, h) in face:
+            crop = image[y:y + h, x:x + w]
+            crop = cv2.resize(crop, dsize=(196, 196), interpolation=cv2.INTER_CUBIC)
+            faces.append(crop)
+            
+        return faces
+
+    @commands.command(pass_context=True)
+    async def faces(self, ctx) -> None:
+        '''
+        Chooses a drop location for WarZone
+        '''
+        print("Downloading image...")
+        # download the attachment
+        disc_img = ctx.message.attachments[0]
+        await disc_img.save("face_im.png")
+
+        image = cv2.imread("face_im.png")
+
+        faces = self.get_face(image)
+
+        for idx, face in enumerate(faces):
+            cv2.imwrite(os.path.join('faces', f'face{idx}.png'), face)
+
+        print("Sending image")
+        for image in os.listdir('faces'):
+            with open(os.path.join('faces', image), 'rb') as f:
+                picture = discord.File(f)
+                await ctx.send(file=picture)
+            os.remove(os.path.join('faces', image))
+
+    @commands.command(pass_context=True)
+    async def faces(self, ctx) -> None:
+        '''
+        Chooses a drop location for WarZone
+        '''
+        print("Downloading image...")
+        # download the attachment
+        disc_img = ctx.message.attachments[0]
+        await disc_img.save("face_im.png")
+
+        image = cv2.imread("face_im.png")
+
+        faces = self.get_face(image)
+
+        for idx, face in enumerate(faces):
+            cv2.imwrite(os.path.join('faces', f'face{idx}.png'), face)
+
+        print("Sending image")
+        for image in os.listdir('faces'):
+            with open(os.path.join('faces', image), 'rb') as f:
+                picture = discord.File(f)
+                await ctx.send(file=picture)
+            os.remove(os.path.join('faces', image))
 
     @commands.command(pass_context=True, aliases=['deep_fry'])
     async def fry(self, ctx, res_factor1=4, res_factor2=5) -> None:
