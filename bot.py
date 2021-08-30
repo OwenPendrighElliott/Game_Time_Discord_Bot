@@ -91,8 +91,10 @@ async def schedule_func():
         print("---------------------------------------------")
         print(guild)
         print(channel)
-
-        await channel.send("TESTING")
+        try:
+            await channel.send("TESTING")
+        except:
+            continue
 
     # for guild in bot.guilds:
     #     channel = get(guild.channels, name='bot_cmds', type=discord.ChannelType.text)
