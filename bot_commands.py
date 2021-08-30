@@ -220,7 +220,7 @@ class BotCommands(commands.Cog):
             await ctx.send("The solution was there all along...")
             return
 
-        if functools.reduce(mul, [i for i in ns if i > 0]) < target:
+        if functools.reduce(mul, [i for i in ns if i > 0]) < 100 or functools.reduce(mul, [i for i in ns if i > 0]) < target:
             await ctx.send("Oi, no funny business pls")
             return
 
