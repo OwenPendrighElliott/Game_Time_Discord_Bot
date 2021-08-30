@@ -88,7 +88,12 @@ async def schedule_func():
             channel = discord.utils.get(guild.text_channels, name="bot_cmds")
         except:
             continue
+        print("---------------------------------------------")
+        print(guild)
+        print(channel)
+        
         message_channel = bot.get_channel(channel)
+        print(message_channel)
         await message_channel.send("TESTING")
 
 # add misc commands cog
