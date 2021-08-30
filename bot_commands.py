@@ -10,6 +10,9 @@ from itertools import combinations
 import cv2
 import numpy as np
 from typing import List
+from operator import mul
+import functools
+
 
 # letters and number modules that are used in a separate project of mine
 # https://github.com/OwenPendrighElliott/countdown_solver
@@ -212,7 +215,12 @@ class BotCommands(commands.Cog):
         Find the optimal solution for a game of numbers (countdown)
         '''
         ns = [int(n) for n in numbers.split('-')]
-        if sum(ns) < 100:
+
+        if target in ns:
+            await ctx.send("The solution was there all along...")
+            return
+
+        if functools.reduce(mul, ns) < target:
             await ctx.send("Oi, no funny business pls")
             return
 
