@@ -216,7 +216,7 @@ class BotCommands(commands.Cog):
         '''
         ns = [int(n) for n in numbers.split('-')]
 
-        if target in ns:
+        if target in ns and not trickshot:
             await ctx.send("The solution was there all along...")
             return
 
