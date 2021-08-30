@@ -213,7 +213,9 @@ class BotCommands(commands.Cog):
         '''
         ns = [int(n) for n in numbers.split('-')]
         if sum(ns) < 100:
-            ctx.send("Oi, no funny business pls")
+            await ctx.send("Oi, no funny business pls")
+            return
+
         game = nums.numbers_game(target, ns, trickshot)
         sol = game.solve()
         

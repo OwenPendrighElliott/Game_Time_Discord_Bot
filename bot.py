@@ -71,6 +71,9 @@ async def help(ctx):
     embed.add_field(name='!numbers', 
                     value='Using the hyphen separated list of numbers reach the goal number. If true is added then do a trickshot!',
                     inline=False)
+    embed.add_field(name='!faces', 
+                    value='Extracts all faces from a photo',
+                    inline=False)
     await ctx.send(embed=embed)
 
 # notify that bot is running
