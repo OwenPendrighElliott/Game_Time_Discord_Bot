@@ -5,6 +5,7 @@ from discord.utils import get
 from dotenv import load_dotenv
 import random
 import youtube_dl
+import time
 
 # import files with cogs
 import bot_commands
@@ -75,6 +76,15 @@ async def help(ctx):
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
+
+@bot.event
+async def alarm_message():
+    await bot.wait_until_ready()
+    while not bot.is_closed:
+        channel = get(bot.guild.channels, name='bot_cmds', type=discord.ChannelType.text)
+        messages = ('TESTING')
+        await bot.send_message(channel, messages)
+        await time.sleep(5) #runs every 5 seconds
 
 # add misc commands cog
 bot.add_cog(bot_commands.BotCommands(bot))
