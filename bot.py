@@ -79,7 +79,7 @@ async def on_ready():
     print(f"Logged in as {bot.user.name}")
 
 @tasks.loop(seconds=10)
-async def called_once_a_day():
+async def schedule_func():
     for guild in bot.guilds:
         try:
             channel = discord.utils.get(guild.text_channels, name="bot_cmds")
@@ -96,6 +96,9 @@ bot.add_cog(bot_audio.BotAudio(bot))
 
 # add events cog
 bot.add_cog(bot_events.BotEvents(bot, CHNL_SND_DICT, STALK_EXCLUDE, VOLUME))
+
+# start scheduled function
+schedule_func.start()
 
 # run the bot
 bot.run(TOKEN)
