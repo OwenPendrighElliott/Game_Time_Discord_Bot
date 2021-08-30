@@ -83,21 +83,20 @@ async def on_ready():
 
 @tasks.loop(seconds=5)
 async def schedule_func():
-    # for guild in bot.guilds:
-    #     try:
-    #         channel = discord.utils.get(guild.text_channels, name="bot_cmds")
-    #     except:
-    #         continue
-        # print("---------------------------------------------")
-        # print(guild)
-        # print(channel)
-        
-        # message_channel = bot.get_channel(channel)
-        # print(message_channel)
-        # await message_channel.send("TESTING")
     for guild in bot.guilds:
-        channel = get(guild.channels, name='bot_cmds', type=discord.ChannelType.text)
-        await bot.send_message(channel, "TEST")
+        try:
+            channel = discord.utils.get(guild.text_channels, name="bot_cmds")
+        except:
+            continue
+        print("---------------------------------------------")
+        print(guild)
+        print(channel)
+
+        await channel.send("TESTING")
+
+    # for guild in bot.guilds:
+    #     channel = get(guild.channels, name='bot_cmds', type=discord.ChannelType.text)
+    #     await bot.send_message(channel, "TEST")
 
 # add misc commands cog
 bot.add_cog(bot_commands.BotCommands(bot))
