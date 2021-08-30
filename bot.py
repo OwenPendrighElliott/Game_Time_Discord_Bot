@@ -1,11 +1,12 @@
 import discord
 import os
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from dotenv import load_dotenv
 import random
 import youtube_dl
 import time
+import asyncio
 
 # import files with cogs
 import bot_commands
@@ -77,14 +78,15 @@ async def help(ctx):
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
 
-@bot.event
-async def alarm_message():
-    await bot.wait_until_ready()
-    while not bot.is_closed:
-        channel = get(bot.guild.channels, name='bot_cmds', type=discord.ChannelType.text)
-        messages = ('TESTING')
-        await bot.send_message(channel, messages)
-        await time.sleep(5) #runs every 5 seconds
+@tasks.loop(seconds=10)
+async def called_once_a_day():
+    for guild in bot.guilds:
+        try:
+            channel = discord.utils.get(guild.text_channels, name="bot_cmds")
+        except:
+            continue
+        message_channel = bot.get_channel(channel)
+        await message_channel.send("TESTING")
 
 # add misc commands cog
 bot.add_cog(bot_commands.BotCommands(bot))

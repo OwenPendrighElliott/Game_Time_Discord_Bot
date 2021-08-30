@@ -212,6 +212,8 @@ class BotCommands(commands.Cog):
         Find the optimal solution for a game of numbers (countdown)
         '''
         ns = [int(n) for n in numbers.split('-')]
+        if sum(ns) < 100:
+            ctx.send("Oi, no funny business pls")
         game = nums.numbers_game(target, ns, trickshot)
         sol = game.solve()
         
