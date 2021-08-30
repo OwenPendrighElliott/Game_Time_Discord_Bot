@@ -92,7 +92,8 @@ async def schedule_func():
         print(guild)
         print(channel)
         try:
-            await channel.send("TESTING")
+            # await channel.send("TESTING")
+            pass
         except:
             continue
 
