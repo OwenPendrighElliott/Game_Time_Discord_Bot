@@ -18,3 +18,5 @@ class BotSettings():
 
         # List of channels that the bot won't follow people into, bot will still join these if someone has not moved from another channel
         self.stalk_exclude = ['General']
+
+        self.server_log_loc = '/opt/minecraft/server/logs/latest.log'

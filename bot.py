@@ -14,6 +14,9 @@ import bot_audio
 import bot_events
 import bot_settings
 
+# additional file to monitor a minecraft server
+from MinecraftServerMonitor import get_updates
+
 # load token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -25,6 +28,7 @@ bs = bot_settings.BotSettings()
 VOLUME = bs.volume
 CHNL_SND_DICT = bs.chnl_snd_dict
 STALK_EXCLUDE = bs.stalk_exclude
+MINECRAFT_SERVER_LOGS = bs.server_log_loc
 
 # make way for custom help command
 bot.remove_command('help')
@@ -81,25 +85,20 @@ async def help(ctx):
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=60)
 async def schedule_func():
     for guild in bot.guilds:
         try:
             channel = discord.utils.get(guild.text_channels, name="bot_cmds")
         except:
             continue
-        print("---------------------------------------------")
-        print(guild)
-        print(channel)
         try:
-            # await channel.send("TESTING")
+            updates = get_updates(MINECRAFT_SERVER_LOGS)
+            if updates != '':
+                await channel.send(updates)
             pass
         except:
             continue
-
-    # for guild in bot.guilds:
-    #     channel = get(guild.channels, name='bot_cmds', type=discord.ChannelType.text)
-    #     await bot.send_message(channel, "TEST")
 
 # add misc commands cog
 bot.add_cog(bot_commands.BotCommands(bot))
