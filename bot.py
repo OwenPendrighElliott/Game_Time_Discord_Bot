@@ -81,7 +81,7 @@ async def help(ctx):
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=5)
 async def schedule_func():
     # for guild in bot.guilds:
     #     try:
