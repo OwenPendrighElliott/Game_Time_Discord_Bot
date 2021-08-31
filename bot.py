@@ -1,16 +1,21 @@
 import discord
 import os
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from dotenv import load_dotenv
 import random
 import youtube_dl
+import time
+import asyncio
 
 # import files with cogs
 import bot_commands
 import bot_audio
 import bot_events
 import bot_settings
+
+# additional file to monitor a minecraft server
+from MinecraftServerMonitor import get_updates
 
 # load token
 load_dotenv()
@@ -23,6 +28,7 @@ bs = bot_settings.BotSettings()
 VOLUME = bs.volume
 CHNL_SND_DICT = bs.chnl_snd_dict
 STALK_EXCLUDE = bs.stalk_exclude
+MINECRAFT_SERVER_LOGS = bs.server_log_loc
 
 # make way for custom help command
 bot.remove_command('help')
@@ -69,12 +75,30 @@ async def help(ctx):
     embed.add_field(name='!numbers', 
                     value='Using the hyphen separated list of numbers reach the goal number. If true is added then do a trickshot!',
                     inline=False)
+    embed.add_field(name='!faces', 
+                    value='Extracts all faces from a photo',
+                    inline=False)
     await ctx.send(embed=embed)
 
 # notify that bot is running
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
+
+@tasks.loop(seconds=60)
+async def schedule_func():
+    for guild in bot.guilds:
+        try:
+            channel = discord.utils.get(guild.text_channels, name="bot_cmds")
+        except:
+            continue
+        try:
+            updates = get_updates(MINECRAFT_SERVER_LOGS)
+            if updates != '':
+                await channel.send(updates)
+            pass
+        except:
+            continue
 
 # add misc commands cog
 bot.add_cog(bot_commands.BotCommands(bot))
@@ -84,6 +108,9 @@ bot.add_cog(bot_audio.BotAudio(bot))
 
 # add events cog
 bot.add_cog(bot_events.BotEvents(bot, CHNL_SND_DICT, STALK_EXCLUDE, VOLUME))
+
+# start scheduled function
+schedule_func.start()
 
 # run the bot
 bot.run(TOKEN)

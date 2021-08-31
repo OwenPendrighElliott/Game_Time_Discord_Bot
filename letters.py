@@ -3,6 +3,7 @@ from itertools import combinations
 
 class letters_game():
     def __init__(self, letters, words=None):
+        letters = letters.lower()
         # by default use the unix words file
         if words == None:
             wl = open('/usr/share/dict/words', 'r')
