@@ -14,7 +14,8 @@ class BotSettings():
                         '🎮 game-time 🎮' : ['hello_gamer.mp3', 'frickin_gaming.mp3', 'gaming_setup.mp3'], 
                         '💻 kript-skiddies 💻' : ['HACKERMAN.mp3'], 
                         '⏩ speed-run ⏩' : ['sonic.mp3']*99+['sanic.mp3'], 
-                        '⛓ the-gulag ⛓' : ['inthegulag.mp3']}
+                        '⛓ the-gulag ⛓' : ['inthegulag.mp3'],
+                        '📦 jack-box 📦': "jbg.wav"}
 
         # List of channels that the bot won't follow people into, bot will still join these if someone has not moved from another channel
         self.stalk_exclude = ['General']
