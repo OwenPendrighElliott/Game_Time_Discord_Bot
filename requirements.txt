@@ -1,0 +1,7 @@
+youtube_dl==2021.6.6
+numpy==1.19.2
+discord.py==1.7.3
+opencv_python==4.5.2.52
+discord==1.7.3
+Pillow==8.3.1
+python-dotenv==0.19.0
