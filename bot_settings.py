@@ -15,7 +15,7 @@ class BotSettings():
                         '💻 kript-skiddies 💻' : ['HACKERMAN.mp3'], 
                         '⏩ speed-run ⏩' : ['sonic.mp3']*99+['sanic.mp3'], 
                         '⛓ the-gulag ⛓' : ['inthegulag.mp3'],
-                        '📦 jack-box 📦': "jbg.wav"}
+                        '📦 jack-box 📦': ["jbg.mp3"]}
 
         # List of channels that the bot won't follow people into, bot will still join these if someone has not moved from another channel
         self.stalk_exclude = ['General']
