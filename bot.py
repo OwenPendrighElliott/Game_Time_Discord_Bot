@@ -14,9 +14,6 @@ import bot_audio
 import bot_events
 import bot_settings
 
-# additional file to monitor a minecraft server
-from MinecraftServerMonitor import get_updates
-
 # load token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -87,18 +84,7 @@ async def on_ready():
 
 @tasks.loop(seconds=60)
 async def schedule_func():
-    for guild in bot.guilds:
-        try:
-            channel = discord.utils.get(guild.text_channels, name="bot_cmds")
-        except:
-            continue
-        try:
-            updates = get_updates(MINECRAFT_SERVER_LOGS)
-            if updates != '':
-                await channel.send(updates)
-            pass
-        except:
-            continue
+    pass
 
 # add misc commands cog
 bot.add_cog(bot_commands.BotCommands(bot))
