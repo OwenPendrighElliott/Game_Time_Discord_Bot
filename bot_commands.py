@@ -244,12 +244,17 @@ class BotCommands(commands.Cog):
         game = letters.letters_game(ls)
         sol = game.solve()
         await ctx.send(f'The best word is "{sol}" and has a length of {len(sol)}')
-        
+
     @commands.command(pass_context=True)
-    async def update(self, ctx, branch="master") -> None:
+    async def keanu(self, ctx) -> None:
         '''
         random keanu photo
         '''
+
+        if not os.listdir('keanu'):
+            await ctx.send("No Photos :(")
+            return 
+            
         keanu_photo = os.path.join('keanu', random.choice(os.listdir('keanu')))
         with open(keanu_photo, 'rb') as f:
             picture = discord.File(f)
