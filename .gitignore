@@ -4,6 +4,7 @@ bot_update_dev.sh
 sounds/*.mp3
 known_faces/*.png
 tmp/*.mp3
+keanu/*
 .env
 yt_tmp.mp3
 attachment.png
