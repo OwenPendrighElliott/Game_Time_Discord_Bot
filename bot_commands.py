@@ -219,7 +219,7 @@ class BotCommands(commands.Cog):
         """
         gulag = None
         for channel in ctx.message.author.guild.channels:
-            if channel.name == "⛓ the-gulag ⛓" or channel.name == "the-gulag":
+            if "the-gulag" in channel.name:
                 gulag = channel
 
         for member in ctx.message.author.guild.members:
