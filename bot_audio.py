@@ -2,9 +2,8 @@ import discord
 import os
 from discord.ext import commands
 from discord.utils import get
-import youtube_dl
+import yt_dlp
 import collections
-
 
 
 class BotAudio(commands.Cog):
@@ -13,11 +12,10 @@ class BotAudio(commands.Cog):
         self.ytq = collections.deque()
 
     # play a local file
-    @commands.command(pass_context=True, aliases=['pf'])
+    @commands.command(pass_context=True, aliases=["pf"])
     async def play_file(self, ctx, snd, volume=0.2, usr=None):
-
         # if the requested file exists them play it
-        f = os.path.join('sounds', snd)
+        f = os.path.join("sounds", snd)
         snd_there = os.path.isfile(f)
         if not snd_there:
             await ctx.send(f"Never heard of {snd}, soz")
@@ -31,14 +29,14 @@ class BotAudio(commands.Cog):
             channel = ctx.message.author.voice.channel
         else:
             for member in ctx.message.author.guild.members:
-                if str(member).split('#')[0].lower() == usr.lower():
+                if str(member).split("#")[0].lower() == usr.lower():
                     channel = member.voice.channel
 
         # if bot is doing something else stop it
         if voice and voice.is_playing():
             voice.stop()
             await voice.disconnect()
-        
+
         # if bot is already connected the move otherwise initialise a connection
         if voice and voice.is_connected():
             await voice.move_to(channel)
@@ -47,25 +45,27 @@ class BotAudio(commands.Cog):
 
         print(f"The bot is connected to {channel}")
         # play the sound
-        voice.play(discord.FFmpegPCMAudio(os.path.join('sounds', snd)))
+        voice.play(discord.FFmpegPCMAudio(os.path.join("sounds", snd)))
         voice.source = discord.PCMVolumeTransformer(voice.source)
         voice.source.volume = volume
 
-        await ctx.send(f"Playing {snd} for you {str(ctx.message.author).split('#')[0]}!")
+        await ctx.send(
+            f"Playing {snd} for you {str(ctx.message.author).split('#')[0]}!"
+        )
 
-    # list all sound files, included in audio cog due to relevance 
-    @commands.command(pass_context=True, aliases=['ls'])
+    # list all sound files, included in audio cog due to relevance
+    @commands.command(pass_context=True, aliases=["ls"])
     async def list_sounds(self, ctx):
-        sounds = os.path.join('sounds')
-        await ctx.send('The following sounds are in the sounds folder:')
+        sounds = os.path.join("sounds")
+        await ctx.send("The following sounds are in the sounds folder:")
         files = ""
         for file in os.listdir(sounds):
             if file.endswith(".mp3") or file.endswith(".wav"):
                 files += file
-                files += '\n'
+                files += "\n"
         await ctx.send(files)
-       
-    @commands.command(pass_context=True, aliases=['p'])
+
+    @commands.command(pass_context=True, aliases=["p"])
     async def play(self, ctx, url: str, volume=0.2):
         print(self.ytq)
         if url == "" and self.ytq:
@@ -73,9 +73,9 @@ class BotAudio(commands.Cog):
         elif url == "":
             await ctx.send("No link was provided and none are on the queue")
             return
-            
+
         # if the tmp file is already there then delete it
-        f = os.path.join('yt_tmp.mp3')
+        f = os.path.join("yt_tmp.mp3")
         snd_there = os.path.isfile(f)
         try:
             if snd_there:
@@ -83,39 +83,44 @@ class BotAudio(commands.Cog):
                 print("Removed old mp3")
         except PermissionError:
             print("Can't delete song because it is being played")
-            await ctx.send("Error deleting last song, maybe try killing me with '!stop'")
-        
+            await ctx.send(
+                "Error deleting last song, maybe try killing me with '!stop'"
+            )
+
         await ctx.send("Preparing audio")
 
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         channel = ctx.message.author.voice.channel
-        
+
         # yt download options
-        ydl_opts = {'format' : 'bestaudio/best',
-                    'postprocessors' : [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': '192',
-                        }],
-                    }
+        ydl_opts = {
+            "format": "bestaudio/best",
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }
+            ],
+        }
 
         # Download the file
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            print('Downloading file')
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            print("Downloading file")
             try:
                 ydl.download([url])
             except:
                 await ctx.send("Provided link is not a valid YT link")
-        
+
         # rename the downloaded file
-        for file in os.listdir('./'):
+        for file in os.listdir("./"):
             if file.endswith(".mp3"):
-                os.rename(file, 'yt_tmp.mp3')
+                os.rename(file, "yt_tmp.mp3")
 
         if voice and voice.is_playing():
             voice.stop()
             await voice.disconnect()
-            
+
         if voice and voice.is_connected():
             await voice.move_to(channel)
         else:
@@ -130,22 +135,28 @@ class BotAudio(commands.Cog):
 
         await ctx.send(f"Playing your link {str(ctx.message.author).split('#')[0]}!")
 
-    @commands.command(pass_context=True, aliases=['q'])
+    @commands.command(pass_context=True, aliases=["q"])
     async def queue(self, ctx, url: str, volume=0.2):
         self.ytq.appendleft(url)
         await ctx.send("Adding to queue")
-    
 
     # kill all voice activity for the bot
-    @commands.command(pass_context=True, aliases=['s'])
+    @commands.command(pass_context=True, aliases=["s"])
     async def stop(self, ctx):
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         channel = ctx.message.author.voice.channel
-        
+
         if voice and voice.is_connected():
             await voice.disconnect()
             print(f"Bot has left {channel}")
-            await ctx.send(f"Leaving your channel {str(ctx.message.author).split('#')[0]}")
+            await ctx.send(
+                f"Leaving your channel {str(ctx.message.author).split('#')[0]}"
+            )
         else:
             print(f"Bot was told to leave but isn't in a channel")
             await ctx.send(f"I'm not in a channel")
+
+
+async def setup(bot):
+    # add misc commands cog
+    await bot.add_cog(BotAudio(bot))
