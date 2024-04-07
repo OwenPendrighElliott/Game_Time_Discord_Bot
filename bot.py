@@ -3,16 +3,6 @@ import os
 from discord.ext import commands, tasks
 from discord.utils import get
 from dotenv import load_dotenv
-import random
-import youtube_dl
-import time
-import asyncio
-
-# import files with cogs
-import bot_commands
-import bot_audio
-import bot_events
-import bot_settings
 
 # load token
 load_dotenv()
